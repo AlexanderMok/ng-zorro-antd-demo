@@ -1,1 +1,10 @@
-<p>setup works!</p>
+<div class="full-screen page-content">
+    <div class="wrapper">
+        <img class="logo-img" alt="logo" src="./assets/img/logo.png">
+        <div class="text-wrapper">
+            <h1 class="title-text">Today</h1>
+        </div>
+        <input nz-input placeholder="输入名称" [(ngModel)]="username" #usernameInput>
+        <button nz-button [nzType]="'primary'" (click)="completeSetup()" [disabled]="!usernameInput.value">开始</button>
+    </div>
+</div>
