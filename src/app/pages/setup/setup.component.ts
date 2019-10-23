@@ -1,3 +1,4 @@
+import { getTodayTime } from './../../../utils/time';
 import { LocalStorageService } from './../../services/local-storage/local-storage.service';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -20,7 +21,7 @@ export class SetupComponent implements OnInit {
 
   public completeSetup(): void {
     this.store.set(INIT_FLAG, true);
-    // this.store.set(START_USING_DATE, '');
+    this.store.set(START_USING_DATE, getTodayTime());
     this.store.set(USERNAME, this.username);
   }
 }
