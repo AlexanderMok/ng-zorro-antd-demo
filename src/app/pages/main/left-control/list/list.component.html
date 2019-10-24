@@ -12,7 +12,7 @@
         </span>
     </li>
     <li nz-menu-item *ngFor="let list of lists" [nzSelected]="currentListUuid === list._id" (click)="click(list._id)"
-        (contextmenu)="contextMenu($event, contextTemplate, list._id)">
+        (contextmenu)="contextMenu($event, menu, list._id)">
         <span>
             <i nz-icon nzType="bars" nzTheme="outline"></i>
             <span class="nav-text">{{ list.title }}</span>
@@ -20,19 +20,19 @@
     </li>
 </ul>
 
-<ng-template #contextTemplate>
+<nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu nzInDropDown nzSelectable (nzClick)="close()">
         <li nz-menu-item (click)="openRenameListModal()">
-            <i class="anticon anticon-edit anticon-right-margin"></i>
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
             <span>重命名</span>
         </li>
         <li nz-menu-divider></li>
         <li nz-menu-item (click)="delete()">
-            <i class="anticon anticon-delete anticon-right-margin danger"></i>
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
             <span class="danger">删除列表</span>
         </li>
     </ul>
-</ng-template>
+</nz-dropdown-menu>
 
 <nz-modal [(nzVisible)]="addListModalVisible" [nzTitle]="'添加新列表'" [nzClosable]="true" [nzWidth]="420" [nzOkText]="'添加'"
     [nzCancelText]="'取消'" [nzMaskClosable]="true" (nzOnCancel)="closeAddListModal()"

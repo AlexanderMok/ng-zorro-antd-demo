@@ -1,6 +1,7 @@
 import { USERNAME } from './../../../services/local-storage/local-storage.namespace';
 import { LocalStorageService } from './../../../services/local-storage/local-storage.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { ListComponent } from './list/list.component';
 
 @Component({
   selector: 'app-left-control',
@@ -9,6 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class LeftControlComponent implements OnInit {
   @Input() isCollapsed: boolean;
+  @ViewChild(ListComponent, {static: false}) listComponent: ListComponent;
 
   username: string;
 
@@ -16,5 +18,9 @@ export class LeftControlComponent implements OnInit {
 
   ngOnInit() {
     this.username = this.storage.get(USERNAME);
+  }
+
+  openAddListModal(): void {
+    this.listComponent.openAddListModal();
   }
 }
