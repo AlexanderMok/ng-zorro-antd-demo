@@ -4,16 +4,17 @@
         {{ username }}
     </span>
     <div class="floating-btn header-btn" *ngIf="!isCollapsed">
-        <i class="anticon anticon-setting"></i>
+        <i nz-icon nzType="setting" nzTheme="outline"></i>
     </div>
     <div class="floating-btn header-btn" *ngIf="!isCollapsed">
-        <i class="anticon anticon-calendar"></i>
+        <i nz-icon nzType="calendar" nzTheme="outline"></i>
     </div>
 </div>
 <div class="list-wrapper">
+    <app-list [isCollapsed]="isCollapsed"></app-list>
     <div class="add-list-btn-wrapper">
         <button nz-button nzGhost nzType="dashed">
-            <i class="anticon anticon-plus"></i>
+            <i nz-icon nzType="plus" nzTheme="outline"></i>
             <span *ngIf="!isCollapsed">新列表</span>
         </button>
     </div>
