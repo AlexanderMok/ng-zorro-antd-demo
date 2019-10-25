@@ -5,6 +5,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Todo, List } from 'src/domain/entities';
 import { TodoService } from 'src/app/services/todo/todo.service';
 import { Subject, combineLatest } from 'rxjs';
+import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-todo',
@@ -19,7 +20,8 @@ export class TodoComponent implements OnInit, OnDestroy {
 
   constructor(
     private listService: ListService,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private nzContextMenuService: NzContextMenuService
   ) { }
 
   ngOnInit() {
@@ -53,5 +55,34 @@ export class TodoComponent implements OnInit, OnDestroy {
 
   add(title: string): void {
     this.todoService.add(title);
+  }
+
+  contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent, uuid: string): void {
+    this.nzContextMenuService.create($event, menu);
+    this.currentContextTodo = this.todos.find(t => t._id === uuid);
+  }
+
+  listsExcept(listUUID: string): List[] {
+    return this.lists.filter(l => l._id !== listUUID);
+  }
+
+  toggle(uuid: string): void {
+    this.todoService.toggleTodoComplete(uuid);
+  }
+
+  delete(): void {
+    this.todoService.delete(this.currentContextTodo._id);
+  }
+
+  setToday(): void {
+    this.todoService.setTodoToday(this.currentContextTodo._id);
+  }
+
+  moveToList(listUuid: string): void {
+    this.todoService.moveToList(this.currentContextTodo._id, listUuid);
+  }
+
+  close(): void {
+    this.nzContextMenuService.close();
   }
 }
