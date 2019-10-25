@@ -1,0 +1,13 @@
+<nz-list *ngIf="todos.length > 0" [nzDataSource]="todos" [nzRenderItem]="item" [nzItemLayout]="horizontal">
+    <ng-template #item let-i>
+        <nz-list-item class="todo-item" (click)="click(i._id)">
+            <nz-list-item-meta [nzTitle]="nzTitle" [nzAvatar]="i.avatar" [nzDescription]="i.description">
+                <ng-template #nzTitle>
+                    <label nz-checkbox (click)="$event.stopPropagation()" [(ngModel)]="i.completedFlag"
+                        (ngModelChange)="toggle(i._id)"></label>
+                    <span [class.strikethrough]="i.completedFlag">{{ i.title }}</span>
+                </ng-template>
+            </nz-list-item-meta>
+        </nz-list-item>
+    </ng-template>
+</nz-list>
