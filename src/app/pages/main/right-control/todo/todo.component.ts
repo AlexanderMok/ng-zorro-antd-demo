@@ -6,6 +6,14 @@ import { Todo, List } from 'src/domain/entities';
 import { TodoService } from 'src/app/services/todo/todo.service';
 import { Subject, combineLatest } from 'rxjs';
 import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd';
+import { RankBy } from 'src/domain/type';
+
+const rankerGenerator = (type: RankBy = 'title'): any => {
+  if (type === 'completeFlag') {
+    return (t1: Todo, t2: Todo) => t1.completedFlag && !t2.completedFlag;
+  }
+  return (t1: Todo, t2: Todo) => t1[type] > t2[type];
+};
 
 @Component({
   selector: 'app-todo',
@@ -29,9 +37,9 @@ export class TodoComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destory$))
       .subscribe(lists => this.lists = lists);
 
-    combineLatest(this.listService.currentUuid$, this.todoService.todo$)
+    combineLatest(this.listService.currentUuid$, this.todoService.todo$, this.todoService.rank$)
       .pipe(takeUntil(this.destory$))
-      .subscribe(sources => this.processTodos(sources[0], sources[1]));
+      .subscribe(sources => this.processTodos(sources[0], sources[1], sources[2]));
 
     this.todoService.getAll();
     this.listService.getAll();
@@ -41,14 +49,15 @@ export class TodoComponent implements OnInit, OnDestroy {
     this.destory$.next();
   }
 
-  processTodos(listUUID: string, todos: Todo[]): void {
+  processTodos(listUUID: string, todos: Todo[], rank: RankBy): void {
     const filteredTodos = todos
       .filter(todo => {
         return ((listUUID === 'today' && todo.planAt && floorToDate(todo.planAt) <= getTodayTime())
           || (listUUID === 'todo' && (!todo.listUUID || todo.listUUID === 'todo'))
           || (listUUID === todo.listUUID));
       })
-      .map(todo => Object.assign({}, todo) as Todo);
+      .map(todo => Object.assign({}, todo) as Todo)
+      .sort(rankerGenerator(rank));
 
     this.todos = [].concat(filteredTodos);
   }
