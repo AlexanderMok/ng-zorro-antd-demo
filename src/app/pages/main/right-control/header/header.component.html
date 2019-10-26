@@ -1,0 +1,39 @@
+<div class="header-container">
+    <img class="background-img" src="./assets/img/logo.png" alt="">
+    <div class="list-title-wrapper">
+        {{ listTitle }}
+    </div>
+    <div class="suggest-btn-wrapper">
+        <button nz-dropdown nz-button [nzDropdownMenu]="menuContent" [nzType]="'primary'" [nzTrigger]="'click'"
+            [nzClickHide]="false" [nzPlacement]="'bottomRight'">
+            <i nz-icon nzType="bulb" nzTheme="outline"></i>建议
+        </button>
+        <nz-dropdown-menu #menuContent="nzDropdownMenu">
+            <!-- hack nz-zorro! -->
+            <div nz-menu class="dropdown-content-wrapper">
+            </div>
+        </nz-dropdown-menu>
+    </div>
+    <div class="sort-btn-wrapper">
+        <a nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="'bottomRight'">
+            排序
+            <i nz-icon nzType="down" nzTheme="outline"></i>
+        </a>
+        <nz-dropdown-menu #menu='nzDropdownMenu'>
+            <ul nz-menu nzSelectable>
+                <li nz-menu-item (click)="switchRankType('title')">
+                    名称
+                </li>
+                <li nz-menu-item (click)="switchRankType('planAt')">
+                    计划时间
+                </li>
+                <li nz-menu-item (click)="switchRankType('dueAt')">
+                    截止时间
+                </li>
+                <li nz-menu-item (click)="switchRankType('completeFlag')">
+                    完成状态
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+</div>
