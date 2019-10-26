@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { Todo } from 'src/domain/entities';
 import { TODOS } from '../local-storage/local-storage.namespace';
 import { getCurrentTime, floorToMinute, ONE_HOUR } from 'src/utils/time';
+import { RankBy } from 'src/domain/type';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,10 @@ import { getCurrentTime, floorToMinute, ONE_HOUR } from 'src/utils/time';
 export class TodoService {
 
   todo$ = new Subject<Todo[]>();
+  rank$ = new Subject<RankBy>();
 
   private todos: Todo[] = [];
+  private rank: RankBy = 'title';
 
   constructor(
     private listService: ListService,
@@ -24,6 +27,7 @@ export class TodoService {
 
   private broadCast(): void {
     this.todo$.next(this.todos);
+    this.rank$.next(this.rank);
   }
 
   private persist(): void {
@@ -104,5 +108,10 @@ export class TodoService {
   deleteInList(uuid: string): void {
     const toDelete = this.todos.filter(t => t.listUUID === uuid);
     toDelete.forEach(t => this.delete(t._id));
+  }
+
+  toggleRank(r: RankBy): void {
+    this.rank = r;
+    this.rank$.next(r);
   }
 }
