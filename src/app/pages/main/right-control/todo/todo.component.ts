@@ -7,6 +7,7 @@ import { TodoService } from 'src/app/services/todo/todo.service';
 import { Subject, combineLatest } from 'rxjs';
 import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd';
 import { RankBy } from 'src/domain/type';
+import { Router } from '@angular/router';
 
 const rankerGenerator = (type: RankBy = 'title'): any => {
   if (type === 'completeFlag') {
@@ -29,7 +30,8 @@ export class TodoComponent implements OnInit, OnDestroy {
   constructor(
     private listService: ListService,
     private todoService: TodoService,
-    private nzContextMenuService: NzContextMenuService
+    private nzContextMenuService: NzContextMenuService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -93,5 +95,9 @@ export class TodoComponent implements OnInit, OnDestroy {
 
   close(): void {
     this.nzContextMenuService.close();
+  }
+
+  click(uuid: string): void {
+    this.router.navigateByUrl(`/main/${uuid}`);
   }
 }
